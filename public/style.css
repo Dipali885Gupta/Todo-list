@@ -1,0 +1,194 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 350px;
+  z-index: -1;
+}
+body {
+  display: flex;
+  justify-content: center;
+  font-family: "Josefin Sans", sans-serif;
+  background-color: rgb(rgb(109, 230, 10), green, blue);
+}
+.background-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left;
+}
+.container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 30px;
+  margin-top: 100px;
+  /* background-color: yellow; */
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  color: aquamarine;
+  font-size: 50px;
+  font-weight: bold;
+  letter-spacing: 10px;
+}
+
+.new-todo {
+  background-color: black;
+  height: 70px;
+  margin-top: 50px;
+  letter-spacing: 10px;
+  border-radius: 6px;
+  display: flex;
+}
+
+.check {
+  /* background-color:rgb(109, 230, 10);  */
+  display: flex;
+  align-items: center;
+  width: 70px;
+  justify-content: center;
+}
+.new-todo-input {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+.new-todo-input form {
+  flex-grow: 1;
+}
+.new-todo-input input {
+  width: 100%;
+  padding: 10px 0px;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  color: aliceblue;
+  font-size: 18px;
+}
+
+.check-mark {
+  width: 30px;
+  height: 30px;
+  border: 2px solid hsl(237, 14%, 26%);
+  transition: all 0.25s;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-mark img {
+  visibility: hidden;
+}
+
+.check-mark.checked img,
+.check-mark:hover img {
+  visibility: visible;
+}
+.check-mark:hover {
+  border-color: linear-gradient(135deg, #55ddff 0%, #c058f3 100%);
+  background: linear-gradient(135deg, #55ddff 0%, #c058f3 100%);
+}
+
+.check-mark.checked {
+  background-color: pink;
+  background: linear-gradient(135deg, #55ddff 0%, #c058f3 100%);
+}
+
+.todo-text.checked {
+  text-decoration: line-through;
+  color: hsl(233, 14%, 35%);
+}
+.todo-item {
+  background-color: blueviolet;
+  width: 100%;
+  display: flex;
+  height: 70px;
+  border-bottom: 1px solid rgb(23, 23, 113);
+  transition: all 0.25s ease;
+  display: flex;
+  z-index: -1;
+  cursor: pointer;
+}
+.todo-item :hover {
+  transform: translate(-2px);
+  box-shadow: 0px 0px 7px 0px;
+  border-color: azure;
+  border-color: red;
+  z-index: 10;
+}
+
+.left-container {
+  display: flex;
+  flex: 0.9;
+}
+.right-container {
+  display: flex;
+  flex: 0.1;
+  align-items: center;
+}
+.todo-text {
+  display: flex;
+  align-items: center;
+  color: azure;
+  font-weight: 600;
+}
+.todo-items-wrapper {
+  background-color: rgb(112, 115, 114);
+  margin-top: 20px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.todo-items-info {
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+  width: 100%;
+  color: rgb(31, 30, 29);
+  align-items: center;
+  padding: 0 30px;
+}
+
+.delete-button {
+  display: flex;
+  align-items: center;
+  border: none;
+}
+.delete_button {
+  align-items: center;
+  text-align: center;
+  margin-left: 5px;
+  padding: 10px;
+  background: none;
+  cursor: pointer;
+  border-radius: 30px;
+  color: azure;
+  font-weight: 600;
+}
+.items-status {
+  display: flex;
+  justify-content: center;
+}
+.items-status span {
+  padding: 0 5px;
+  cursor: pointer;
+}
+.items-status span:hover,
+.items-status span.active {
+  color: blue;
+}
+.items-clear {
+  cursor: pointer;
+  text-align: end;
+}

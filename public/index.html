@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@1,300&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="background-image">
+      <img src="./assets/bg-desktop-dark.jpg" />
+    </div>
+    <div class="container">
+      <div class="header">
+        <div class="title">TODO</div>
+        <div class="theme">
+          <img src="./assets/icon-sun.svg" alt="" />
+        </div>
+      </div>
+      <div class="new-todo">
+        <div class="check">
+          <div class="check-mark"></div>
+        </div>
+        <div class="new-todo-input">
+          <form id="form">
+            <input
+              id="todo-input"
+              type="text"
+              placeholder="Create a new todo"
+            />
+          </form>
+        </div>
+      </div>
+      <div class="todo-items-wrapper">
+        <div class="todo-items">
+          <div class="todo-item">
+            <div class="left-container">
+              <div class="check">
+                <div class="check-mark">
+                  <img src="./assets/icon-check.svg" />
+                </div>
+              </div>
+
+              <div class="todo-text">cut the lawn</div>
+            </div>
+
+            <div class="right-container">
+              <div class="delete-button">
+                <img src="./assets/delete_button.png" />
+              </div>
+            </div>
+          </div>
+
+          <div class="todo-item">
+            <div class="check">
+              <div class="check-mark">
+                <img src="./assets/icon-check.svg" />
+              </div>
+            </div>
+            <div class="todo-text">cut the lawn</div>
+          </div>
+          <div class="todo-item">
+            <div class="check">
+              <div class="check-mark">
+                <img src="./assets/icon-check.svg" />
+              </div>
+            </div>
+            <div class="todo-text">cut the lawn</div>
+          </div>
+        </div>
+        <div class="todo-items-info">
+          <div class="Items-left">5 items left</div>
+          <div class="items-status">
+            <span class="active">all</span>
+            <span>active</span>
+            <span>completed</span>
+          </div>
+          <div class="items-clear">
+            <span>clear completed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+
+      // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
+
+      // Add Firebase products that you want to use
+      import { getAuth } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+      // const firebaseConfig = {
+      //   apiKey: "AIzaSyAFqDNwwKTp8oxoTyCE1zEIfZwN4Ncd1KQ",
+      //   authDomain: "to-do-list-1a675.firebaseapp.com",
+      //   projectId: "to-do-list-1a675",
+      //   storageBucket: "to-do-list-1a675.appspot.com",
+      //   messagingSenderId: "331032412453",
+      //   appId: "1:331032412453:web:20fb9b11ad6ef683cddacc",
+      //   measurementId: "G-V46R2R7WZ2",
+      // };
+
+
+      const firebaseConfig = {
+  apiKey: "AIzaSyBEwkVBsmuDwvTcaVmHY-kwAlAPZ-PGLC4",
+  authDomain: "to-do-list-a90c1.firebaseapp.com",
+  projectId: "to-do-list-a90c1",
+  storageBucket: "to-do-list-a90c1.appspot.com",
+  messagingSenderId: "957975694813",
+  appId: "1:957975694813:web:9ebd426e279754243afa34",
+  measurementId: "G-BW529E6NP7"
+};
+
+
+
+
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db = getFirestore(app);
+
+      import {
+        getFirestore,
+        collection,
+        query,
+        addDoc,
+        doc,
+        getDocs,
+        updateDoc,
+        getDoc,
+        deleteDoc,
+        onSnapshot,
+      } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+      const addItem = async (event) => {
+        event.preventDefault();
+
+        var textv = document.getElementById("todo-input").value;
+
+        // Add the new todo item to the Firestore collection "todos"
+        try {
+          const docRef = await addDoc(collection(db, "todo-list-items"), {
+            text: textv,
+            status: "active",
+          });
+          document.getElementById("todo-input").value = "";
+          console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+          console.error("Error adding document: ", e);
+        }
+
+        // Clear the input field
+      };
+
+      form.addEventListener("submit", addItem);
+      const getItems = async () => {
+        const q = query(collection(db, "todo-list-items"));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          let items = [];
+          querySnapshot.forEach((doc) => {
+            items.push({ id: doc.id, ...doc.data() });
+          });
+          console.log(items);
+          generateItems(items);
+        });
+      };
+      function generateItems(items) {
+        console.log("items in generated item", items);
+        let itemsHTML = "";
+        items.forEach((item) => {
+          itemsHTML += `
+          <div class="todo-item">
+
+            <div class="left-container">
+              <div class="check">
+                <div  data-id="${item.id}" class="check-mark ${
+            item.status == "completed" ? "checked" : ""
+          }">
+                  <img src="./assets/icon-check.svg" />
+                </div>
+              </div>
+
+              <div class="todo-text ${
+                item.status == "completed" ? "checked" : ""
+              }" >${item.text}</div>
+            </div>
+
+            <div class="right-container">
+              <div class="delete-button" data-id="${item.id}">
+                <button class="delete_button">Delete</button>
+              </div>
+            </div>
+          </div>
+          `;
+        });
+
+        document.querySelector(".todo-items").innerHTML = itemsHTML;
+        createEvenListeners();
+      }
+
+      const createEvenListeners = () => {
+        let todoCheckMarks = document.querySelectorAll(
+          ".todo-item .check-mark"
+        );
+        let todoDeleteButtons = document.querySelectorAll(
+          ".todo-item .delete-button"
+        );
+        todoCheckMarks.forEach((todoCheckMark) => {
+          todoCheckMark.addEventListener("click", () => {
+            markcompleted(todoCheckMark.dataset.id);
+            // console.log("mark completed");
+          });
+        });
+
+        todoDeleteButtons.forEach((todoDeleteButton) => {
+          todoDeleteButton.addEventListener("click", () => {
+            deleteItem(todoDeleteButton.dataset.id);
+            // console.log("mark completed");
+          });
+        });
+      };
+      async function markcompleted(id) {
+        console.log(id);
+        const item = doc(db, "todo-list-items", id);
+        const docSnap = await getDoc(item);
+
+        if (docSnap.exists()) {
+          let status = docSnap.data().status;
+          console.log("before click", status);
+          if (status == "active") {
+            await updateDoc(item, {
+              status: "completed",
+            });
+          } else if (status == "completed") {
+            await updateDoc(item, {
+              status: "active",
+            });
+          }
+        }
+      }
+      console.log("after click ac", status);
+
+      const deleteItem = async (id) => {
+        console.log("delete button clicked");
+        console.log("delete button id", id);
+        await deleteDoc(doc(db, "todo-list-items", id));
+      };
+      getItems();
+    </script>
+  </body>
+</html>
